@@ -14,18 +14,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "purchases")
+@Table(name = "expenses")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Purchase {
+public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long purchaseId;
+    private Long expenseId;
 
     @Column(nullable = false)
-    private LocalDateTime purchaseDate;
+    private LocalDateTime expenseDate;
 
     @Column(nullable = false)
     private String type;

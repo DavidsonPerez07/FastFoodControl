@@ -46,4 +46,6 @@ public class Product {
 
     @Column(nullable = false)
     private Double salePrice;
+
+    private String imageUrl;
 }
