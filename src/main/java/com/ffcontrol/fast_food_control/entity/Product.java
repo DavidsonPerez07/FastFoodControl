@@ -1,5 +1,6 @@
 package com.ffcontrol.fast_food_control.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CollectionTable;
@@ -36,7 +37,7 @@ public class Product {
         joinColumns = @JoinColumn(name = "product_id")
     )
     @Column(name = "ingredient", nullable = false)
-    private List<String> ingredients;
+    private List<String> ingredients = new ArrayList<>();
 
     @Column(nullable = false)
     private Double netPrice;
