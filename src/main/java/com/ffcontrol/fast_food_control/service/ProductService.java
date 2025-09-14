@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class ProductService {
         product.setIngredients(productRequest.getIngredients()
                                 .stream()
                                 .map(Ingredient::getName)
-                                .collect(Collectors.toList()));
+                                .toList());
         
         var totalIngredientsCosts = productRequest.getIngredients()
                                         .stream()
@@ -102,7 +101,7 @@ public class ProductService {
         return productRepository.findAll()
                 .stream()
                 .map(this::convertToDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void deleteProduct(Long productId) {

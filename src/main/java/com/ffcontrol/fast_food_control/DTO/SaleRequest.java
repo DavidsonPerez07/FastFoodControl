@@ -19,5 +19,5 @@ public class SaleRequest {
 
     private String paymentMethod;
 
-    private List<ProductDTO> products;
+    private List<ProductQuantity> items;
 }

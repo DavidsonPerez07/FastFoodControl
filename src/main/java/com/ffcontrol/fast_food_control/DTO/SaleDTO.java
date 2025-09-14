@@ -23,5 +23,5 @@ public class SaleDTO {
 
     private Double totalPrice;
 
-    private List<ProductDTO> products;
+    private List<ProductQuantity> items;
 }
