@@ -15,6 +15,7 @@ import com.ffcontrol.fast_food_control.DTO.Ingredient;
 import com.ffcontrol.fast_food_control.DTO.ProductDTO;
 import com.ffcontrol.fast_food_control.DTO.ProductEdit;
 import com.ffcontrol.fast_food_control.DTO.ProductRequest;
+import com.ffcontrol.fast_food_control.DTO.ProductSaleTable;
 import com.ffcontrol.fast_food_control.entity.Product;
 import com.ffcontrol.fast_food_control.repository.ProductRepository;
 
@@ -120,6 +121,13 @@ public class ProductService {
         }
         
         productRepository.delete(product);
+    }
+
+    public List<ProductSaleTable> getProductsForSaleTable() {
+        return productRepository.findAll()
+                .stream()
+                .map(product -> new ProductSaleTable(product.getProductId(), product.getProductName(), product.getSalePrice()))
+                .toList();
     }
 
     private ProductDTO convertToDTO(Product product) {
