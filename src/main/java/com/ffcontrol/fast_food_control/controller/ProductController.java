@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ffcontrol.fast_food_control.DTO.ProductDTO;
 import com.ffcontrol.fast_food_control.DTO.ProductEdit;
 import com.ffcontrol.fast_food_control.DTO.ProductRequest;
+import com.ffcontrol.fast_food_control.DTO.ProductSaleTable;
 import com.ffcontrol.fast_food_control.service.ProductService;
 
 @RestController
@@ -57,5 +58,10 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@RequestParam Long productId) {
         productService.deleteProduct(productId);
         return ResponseEntity.ok("Product deleted successfully");
+    }
+
+    @GetMapping("/get-products-for-sale-table")
+    public ResponseEntity<List<ProductSaleTable>> getProductsForSaleTable() {
+        return ResponseEntity.ok(productService.getProductsForSaleTable());
     }
 }
