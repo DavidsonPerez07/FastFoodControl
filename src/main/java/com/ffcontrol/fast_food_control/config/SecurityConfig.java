@@ -35,18 +35,18 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                    //.requestMatchers("/auth/**").permitAll()
-                    //.requestMatchers("/products/**").hasRole("ADMIN")
-                    //.requestMatchers("/products/get-all-products").permitAll()
-                    //.requestMatchers("/products/get-product/**").permitAll()
-                    //.requestMatchers("/sales/**").hasAnyRole("ADMIN", "WORKER")
-                    //.requestMatchers("/users/**").hasRole("ADMIN")
-                    //.requestMatchers("/users/get-user").hasAnyRole("ADMIN", "WORKER")
+                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/products/**").hasRole("ADMIN")
+                    .requestMatchers("/products/get-all-products").permitAll()
+                    .requestMatchers("/products/get-product/**").permitAll()
+                    .requestMatchers("/sales/**").hasAnyRole("ADMIN", "WORKER")
+                    .requestMatchers("/users/**").hasRole("ADMIN")
+                    .requestMatchers("/users/get-user").hasAnyRole("ADMIN", "WORKER")
                     .anyRequest().permitAll()
                 )
-                //.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                //.authenticationProvider(authProvider())
-                //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authProvider())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

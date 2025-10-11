@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
-    private String token;
-    private UserLoginResponse user;
+public class UserLoginResponse {
+    private Long userId;
+    private String userName;
+    private String role;
 }
