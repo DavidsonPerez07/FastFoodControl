@@ -1,6 +1,6 @@
 package com.ffcontrol.fast_food_control.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class ReportsController {
     private ReportsService reportsService;
 
     @GetMapping("/top-products")
-    public ResponseEntity<List<TopProduct>> getTopProducts(@RequestParam LocalDateTime startDate, 
-                                                            @RequestParam LocalDateTime endDate, 
+    public ResponseEntity<List<TopProduct>> getTopProducts(@RequestParam LocalDate startDate, 
+                                                            @RequestParam LocalDate endDate, 
                                                             @RequestParam int topNumber) {
         return ResponseEntity.ok(reportsService.getTopBestSellingProducts(startDate, endDate, topNumber));
     }

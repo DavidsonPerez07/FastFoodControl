@@ -1,6 +1,8 @@
 package com.ffcontrol.fast_food_control.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -27,8 +29,16 @@ public class ReportsService {
     @Autowired
     private SaleProductRepository saleProductRepository;
 
-    public List<TopProduct> getTopBestSellingProducts(LocalDateTime startDate, LocalDateTime endDate, int topNumber) {
-        List<Map<String, Object>> results = saleProductRepository.findTopSellingProducts(startDate, endDate, topNumber);
+    public List<TopProduct> getTopBestSellingProducts(LocalDate startDate, LocalDate endDate, int topNumber) {
+        if (endDate == null) {
+            endDate = startDate;
+        }
+
+        List<Map<String, Object>> results = saleProductRepository
+                                                .findTopSellingProducts(
+                                                    startDate.atStartOfDay(), 
+                                                    endDate.atTime(LocalTime.MAX), 
+                                                    topNumber);
 
         return results.stream()
                 .map(row -> {
