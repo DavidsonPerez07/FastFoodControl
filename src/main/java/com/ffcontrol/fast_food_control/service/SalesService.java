@@ -86,6 +86,13 @@ public class SalesService {
                 .toList();
     }
 
+    public List<SaleDTO> getSalesByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+        return saleRepository.findBySaleDateBetween(startDate, endDate)
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
+    }
+
     public void deleteSale(Long saleId) {
         if (!saleRepository.existsById(saleId)) {
             throw new RuntimeException("Sale not found");

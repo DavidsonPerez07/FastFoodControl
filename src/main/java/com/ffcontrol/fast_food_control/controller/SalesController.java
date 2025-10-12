@@ -1,6 +1,7 @@
 package com.ffcontrol.fast_food_control.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,12 @@ public class SalesController {
     @GetMapping("/get-sales-by-day")
     public ResponseEntity<List<SaleDTO>> getSalesByDay(@RequestParam LocalDate date) {
         return ResponseEntity.ok(salesService.getSalesByDay(date));
+    }
+
+    @GetMapping("/get-sales-by-date-range")
+    public ResponseEntity<List<SaleDTO>> getSalesByDateRange(@RequestParam LocalDateTime startDate, 
+                                                            @RequestParam LocalDateTime endDate) {
+        return ResponseEntity.ok(salesService.getSalesByDateRange(startDate, endDate));
     }
 
     @DeleteMapping("/delete-sale")
