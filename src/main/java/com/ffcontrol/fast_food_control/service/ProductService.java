@@ -1,10 +1,8 @@
 package com.ffcontrol.fast_food_control.service;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class ProductService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private FileStorageService fileStorageService;
+    private CloudinaryService cloudinaryService;
 
     public ProductDTO createProduct(ProductRequest productRequest) throws IOException {
         Product product = new Product();
@@ -57,7 +55,8 @@ public class ProductService {
 
         try {
             if (productRequest.getImage() != null && !productRequest.getImage().isEmpty()) {
-                product.setImageUrl(fileStorageService.storeFile(productRequest.getImage()));
+                Map uploadResult = cloudinaryService.uploadFile(productRequest.getImage());
+                product.setImageUrl(uploadResult.get("secure_url").toString());
             }
             else {
                 throw new RuntimeException("Image file is missing");
@@ -110,11 +109,10 @@ public class ProductService {
                                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         if (product.getImageUrl() != null) {
-            Path path = Paths.get("uploads").resolve(product.getImageUrl().replace("/uploads/", ""))
-                            .toAbsolutePath();
-            
             try {
-                Files.deleteIfExists(path);
+                String imageUrl = product.getImageUrl();
+                String publicId = imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.lastIndexOf("."));
+                cloudinaryService.deleteFile(publicId);
             } catch (IOException e) {
                 throw new RuntimeException("Error deleting product image: " + e.getMessage());
             }
