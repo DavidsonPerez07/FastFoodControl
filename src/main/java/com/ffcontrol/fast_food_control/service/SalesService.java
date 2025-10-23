@@ -41,7 +41,7 @@ public class SalesService {
         List<SaleProduct> saleProducts = new ArrayList<>();
 
         for (ProductQuantity prodQuant : request.getItems()) {
-            Product product = productRepository.findById(prodQuant.getProduct().getProductId())
+            Product product = productRepository.findById(prodQuant.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
 
             SaleProduct saleProduct = new SaleProduct();

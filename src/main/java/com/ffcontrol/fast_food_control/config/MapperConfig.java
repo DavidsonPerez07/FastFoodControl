@@ -23,7 +23,7 @@ public class MapperConfig {
             if (saleProduct == null) return null;
 
             ProductQuantity productQuantity = new ProductQuantity();
-            productQuantity.setProduct(mapper.map(saleProduct.getProduct(), ProductDTO.class));
+            productQuantity.setProductId(saleProduct.getProduct().getProductId());
             productQuantity.setQuantity(saleProduct.getQuantity());
             return productQuantity;
         };

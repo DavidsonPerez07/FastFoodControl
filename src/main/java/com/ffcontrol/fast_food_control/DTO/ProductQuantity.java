@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductQuantity {
-    private ProductDTO product;
+    private Long productId;
     private Integer quantity;
 }
