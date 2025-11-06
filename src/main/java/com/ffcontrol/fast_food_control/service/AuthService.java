@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.ffcontrol.fast_food_control.DTO.LoginResponse;
-import com.ffcontrol.fast_food_control.DTO.UserDTO;
 import com.ffcontrol.fast_food_control.DTO.UserLoginResponse;
 import com.ffcontrol.fast_food_control.entity.User;
 import com.ffcontrol.fast_food_control.repository.UserRepository;

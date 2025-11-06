@@ -49,4 +49,6 @@ public class Product {
     private Double salePrice;
 
     private String imageUrl;
+
+    private Boolean isActive;
 }

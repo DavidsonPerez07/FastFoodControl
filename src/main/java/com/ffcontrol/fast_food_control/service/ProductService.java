@@ -65,6 +65,8 @@ public class ProductService {
             throw new IOException("Error storing product image" + e.getMessage());
         }
 
+        product.setIsActive(true);
+
         product = productRepository.save(product);
 
         return convertToDTO(product);
@@ -100,6 +102,15 @@ public class ProductService {
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
+                .filter(product -> product.getIsActive())
+                .map(this::convertToDTO)
+                .toList();
+    }
+
+    public List<ProductDTO> getInactiveProducts() {
+        return productRepository.findAll()
+                .stream()
+                .filter(product -> !product.getIsActive())
                 .map(this::convertToDTO)
                 .toList();
     }
@@ -118,12 +129,14 @@ public class ProductService {
             }
         }
         
-        productRepository.delete(product);
+        product.setIsActive(false);
+        productRepository.save(product);
     }
 
     public List<ProductSaleTable> getProductsForSaleTable() {
         return productRepository.findAll()
                 .stream()
+                .filter(product -> product.getIsActive())
                 .map(product -> new ProductSaleTable(product.getProductId(), product.getProductName(), product.getSalePrice()))
                 .toList();
     }
