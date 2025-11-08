@@ -2,6 +2,7 @@ package com.ffcontrol.fast_food_control.controller;
 
 import java.util.List;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ffcontrol.fast_food_control.DTO.UserDTO;
+import com.ffcontrol.fast_food_control.DTO.UserLoginResponse;
 import com.ffcontrol.fast_food_control.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/users")
@@ -49,5 +53,23 @@ public class UserController {
         userService.deleteUser(userId);
         
         return ResponseEntity.ok("User deleted successfully");
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserLoginResponse> getCurrentUser(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).build();
+        }
+
+        String token = authHeader.substring(7);
+        UserLoginResponse response = userService.getUserFromToken(token);
+
+        if (response == null) {
+            return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.ok(response);
     }
 }

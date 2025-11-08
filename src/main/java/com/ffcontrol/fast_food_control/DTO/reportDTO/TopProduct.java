@@ -1,4 +1,4 @@
-package com.ffcontrol.fast_food_control.DTO;
+package com.ffcontrol.fast_food_control.DTO.reportDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
