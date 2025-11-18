@@ -37,16 +37,22 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/uploads/**").permitAll()
-                    .requestMatchers("/products/get-all-products").permitAll()
-                    .requestMatchers("/products/get-product/**").permitAll()
-                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/uploads/**", 
+                                    "/products/get-all-products", 
+                                    "/products/get-product/**", 
+                                    "/auth/**")
+                                    .permitAll()
+                    .requestMatchers("/sales/**", 
+                                    "/users/get-user", 
+                                    "/users/me", 
+                                    "/products/get-products-for-sale-table", 
+                                    "/reports/top-products")
+                                    .hasAnyRole("ADMIN", "WORKER")
                     .requestMatchers("/products/**").hasRole("ADMIN")
-                    .requestMatchers("/sales/**").hasAnyRole("ADMIN", "WORKER")
-                    .requestMatchers("/users/get-user", "/users/me").hasAnyRole("ADMIN", "WORKER")
-                    .requestMatchers("/users/**").hasRole("ADMIN")
-                    .requestMatchers("/expenses/**").hasRole("ADMIN")
-                    .requestMatchers("/reports/**").hasRole("ADMIN")
+                    .requestMatchers("/users/**", 
+                                    "/expenses/**", 
+                                    "/reports/**")
+                                    .hasRole("ADMIN")
                     .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
