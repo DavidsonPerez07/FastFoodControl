@@ -10,9 +10,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ffcontrol.fast_food_control.DTO.reportDTO.GrowMonthlyRatio;
 import com.ffcontrol.fast_food_control.DTO.reportDTO.LessSoldProduct;
 import com.ffcontrol.fast_food_control.DTO.reportDTO.MonthlySales;
 import com.ffcontrol.fast_food_control.DTO.reportDTO.ProductSalesCompare;
+import com.ffcontrol.fast_food_control.DTO.reportDTO.ProductSalesCompareResponse;
 import com.ffcontrol.fast_food_control.DTO.reportDTO.SalesCompare;
 import com.ffcontrol.fast_food_control.DTO.reportDTO.SalesSummary;
 import com.ffcontrol.fast_food_control.DTO.reportDTO.SalesSummaryProjection;
@@ -86,7 +88,7 @@ public class ReportsService {
                 .toList();
     }
 
-    public List<MonthlySales> getMonthlySales(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<MonthlySales> getMonthlySales(LocalDate startDate, LocalDate endDate) {
         if (endDate == null) {
             endDate = startDate;
         }
@@ -94,23 +96,23 @@ public class ReportsService {
         return saleRepository.findMonthlySales(startDate, endDate);
     }
 
-    public List<Double> getMonthlyGrowthRatios(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<GrowMonthlyRatio> getMonthlyGrowthRatios(LocalDate startDate, LocalDate endDate) {
         List<MonthlySales> monthlySales = saleRepository.findMonthlySales(startDate, endDate);
-        List<Double> growthRatios = new ArrayList<>();
+        List<GrowMonthlyRatio> growthRatios = new ArrayList<>();
 
         for (int i = 1; i < monthlySales.size(); i++) {
             Double previousMonth = monthlySales.get(i - 1).getTotalSales();
             Double currentMonth = monthlySales.get(i).getTotalSales();
 
             Double ratio = previousMonth == 0 ? 0 : ((currentMonth - previousMonth) / previousMonth) * 100;
-            growthRatios.add(ratio);
+            growthRatios.add(new GrowMonthlyRatio(monthlySales.get(i-1).getMonth() + " - " + monthlySales.get(i).getMonth(), ratio));
         }
 
         return growthRatios;
     }
 
-    public SalesCompare compareSalesBetweenRanges(LocalDateTime startDate1, LocalDateTime endDate1,
-                                                    LocalDateTime startDate2, LocalDateTime endDate2) {
+    public SalesCompare compareSalesBetweenRanges(LocalDate startDate1, LocalDate endDate1,
+                                                    LocalDate startDate2, LocalDate endDate2) {
         Double totalSalesRange1 = saleRepository.sumSalesInRange(startDate1, endDate1);
         Double totalSalesRange2 = saleRepository.sumSalesInRange(startDate2, endDate2);
 
@@ -120,7 +122,7 @@ public class ReportsService {
         return new SalesCompare(totalSalesRange1, totalSalesRange2, diff, percentageChange);
     }
 
-    public List<ProductSalesCompare> compareTwoProducts(Long productId1, Long productId2) {
+    public List<ProductSalesCompareResponse> compareTwoProducts(Long productId1, Long productId2) {
         List<ProductSalesCompare> comparisons = saleProductRepository.compareProductSales(
             List.of(productId1, productId2)
         );
@@ -131,11 +133,26 @@ public class ReportsService {
         Long unitsDiff = product1.getTotalUnitSold() - product2.getTotalUnitSold();
         Double salesDiff = product1.getTotalSalesValue() - product2.getTotalSalesValue();
 
-        product1.setUnitsDiff(unitsDiff);
-        product1.setSalesValueDiff(salesDiff);
-        product2.setUnitsDiff(-unitsDiff);
-        product2.setSalesValueDiff(-salesDiff);
+        ProductSalesCompareResponse response1 = new ProductSalesCompareResponse(
+            product1.getProductName(),
+            product1.getTotalUnitSold(),
+            product1.getTotalSalesValue(),
+            unitsDiff,
+            salesDiff
+        );
 
-        return comparisons;
+        ProductSalesCompareResponse response2 = new ProductSalesCompareResponse(
+            product2.getProductName(),
+            product2.getTotalUnitSold(),
+            product2.getTotalSalesValue(),
+            -unitsDiff,
+            -salesDiff
+        );
+
+        List<ProductSalesCompareResponse> comparisonsResponse = new ArrayList<>();
+        comparisonsResponse.add(response1);
+        comparisonsResponse.add(response2);
+
+        return comparisonsResponse;
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ffcontrol.fast_food_control.DTO.reportDTO.ProductSalesCompare;
-import com.ffcontrol.fast_food_control.DTO.reportDTO.SalesSummary;
 import com.ffcontrol.fast_food_control.entity.SaleProduct;
 
 @Repository
@@ -59,8 +58,8 @@ public interface SaleProductRepository extends JpaRepository<SaleProduct, Long> 
 
     @Query(value = """
             SELECT 
-                p.product_name AS productId,
-                COALESCE(SUM(sp.quantity, 0) AS totalUnitSold
+                p.product_name AS productName,
+                COALESCE(SUM(sp.quantity), 0) AS totalUnitSold,
                 COALESCE(SUM(sp.quantity * p.sale_price), 0) AS totalSalesValue
             FROM sale_products sp
             INNER JOIN products p ON sp.product_id = p.product_id

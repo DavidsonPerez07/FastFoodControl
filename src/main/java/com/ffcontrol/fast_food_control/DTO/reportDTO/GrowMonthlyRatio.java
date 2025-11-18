@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductSalesCompare {
-    private String productName;
-    private Long totalUnitSold;
-    private Double totalSalesValue;
+public class GrowMonthlyRatio {
+    private String months;
+    private Double growthRatio;
 }

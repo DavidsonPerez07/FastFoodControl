@@ -9,8 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductSalesCompare {
+public class ProductSalesCompareResponse {
     private String productName;
     private Long totalUnitSold;
     private Double totalSalesValue;
+    private Long unitsDiff;
+    private Double salesValueDiff;
 }

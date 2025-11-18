@@ -37,17 +37,17 @@ public interface SaleRepository extends JpaRepository<Sale, Long>{
 
     @Query(value = """
             SELECT 
-                YEAR(s.sale_date) AS year,
-                MONTH(s.sale_date) AS month,
-                SUM(s.total_price) AS totalSales,
+                CAST(EXTRACT(YEAR FROM s.sale_date) AS INTEGER) AS year,
+                CAST(EXTRACT(MONTH FROM s.sale_date) AS INTEGER) AS month,
+                SUM(s.total_price) AS totalSales
             FROM sales s
             WHERE s.sale_date BETWEEN :startDate AND :endDate
-            GROUP BY YEAR(s.sale_date), MONTH(s.sale_date)
-            ORDER BY YEAR(s.sale_date), MONTH(s.sale_date)
+            GROUP BY year, month
+            ORDER BY year, month
             """, nativeQuery = true)
     List<MonthlySales> findMonthlySales(
-        @Param("startDate") LocalDateTime startDate, 
-        @Param("endDate") LocalDateTime endDate
+        @Param("startDate") LocalDate startDate, 
+        @Param("endDate") LocalDate endDate
     );
 
     @Query(value = """
@@ -57,7 +57,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long>{
             WHERE s.sale_date BETWEEN :startDate AND :endDate
             """, nativeQuery = true)
     Double sumSalesInRange(
-        @Param("startDate") LocalDateTime startDate, 
-        @Param("endDate") LocalDateTime endDate
+        @Param("startDate") LocalDate startDate, 
+        @Param("endDate") LocalDate endDate
     );
 }
