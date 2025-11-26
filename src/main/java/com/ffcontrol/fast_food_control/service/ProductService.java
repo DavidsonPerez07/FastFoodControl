@@ -91,6 +91,8 @@ public class ProductService {
         
         product.setSalePrice(product.getNetPrice() + (product.getNetPrice() * product.getProfitMargin() / 100));
 
+        product = productRepository.save(product);
+
         return convertToDTO(product);
     }
 
